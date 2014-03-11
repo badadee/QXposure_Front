@@ -8,11 +8,11 @@ app.factory('personFactory', function ($http) {
         getWaitTime: function () {
             return $http.get(url + 'GetWaitTimeForAllRides');
         }
-        /* , 
+        , 
                 addPerson: function (person) { 
                     return $http.post(url, person); 
-                }, 
-                deletePerson: function (person) { 
+                }
+               /*  deletePerson: function (person) { 
                     return $http.delete(url + person.Id); 
                 }, 
                 updatePerson: function (person) { 
@@ -72,6 +72,7 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 
     var layer = new Kinetic.Layer();
 	var imageObj = new Image();
+	//ADDING MAP
     imageObj.onload = function() {
         var map = new Kinetic.Image({
           x: 0,
@@ -81,13 +82,32 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
           height: 800
         });
 		layer.add(map);
+		stage.add(layer);
 	};
-	imageObj.src = 'img/parkMap.jpg';
+	imageObj.src = 'img/parkMap.jpg'; //http://www.walibi.com/belgium/be-en/park-map
+	
+	
+	//GET WAITTIMES CALLBACK
     var getPeopleSuccessCallback = function (data, status) {
         var x2js = new X2JS();
 
         var tobj = x2js.xml_str2json(data).string.__text;
         $scope.waitTimes = x2js.xml_str2json(tobj).data.entry;
+		//ADDING TITLE
+		var titleLabel = new Kinetic.Label({
+                x: 50,
+                y: 50,
+                opacity: 1
+            });
+            titleLabel.add(new Kinetic.Text({
+                text: 'Q-Xposure',
+                fontFamily: 'Arial',
+                fontSize: 32,
+                padding: 0,
+                fill: 'gray'
+            }));
+		layer.add(titleLabel);
+		
         $scope.waitTimes.forEach(function (node) {
 
             var coordX = node.coordinate.split(',')[0];
@@ -161,16 +181,23 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 			
 	//FINALIZING
             layer.add(group);
-            stage.add(layer);
+            
         });
+		stage.add(layer);
     };
-
+	
     var errorCallback = function (data, status, headers, config) {
         notificationFactory.error(data.ExceptionMessage);
+		alert("getWaitTime failed!");
     };
-    personFactory.getWaitTime().success(getPeopleSuccessCallback).error(errorCallback);
-
-
+    $scope.refresh = function(){
+		var shapes = stage.find('Group');
+		shapes.each(function (shape) {
+			shape.destroy();
+		});
+		personFactory.getWaitTime().success(getPeopleSuccessCallback).error(errorCallback);
+	}
+	
 
 
 });
