@@ -99,18 +99,33 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 		$scope.waitTimes = data;
 		//ADDING TITLE
 		var titleLabel = new Kinetic.Label({
-			x: 50,
+			x: 70,
 			y: 50,
 			opacity: 1
 		});
 		titleLabel.add(new Kinetic.Text({
-			text: 'Q-Xposure',
+			text: 'posure',
 			fontFamily: 'Arial',
-			fontSize: 36,
+			fontSize: 32,
 			padding: 0,
 			fill: 'gray'
 		}));
+		
 		layer.add(titleLabel);
+		var imageLogo = new Image();
+		//ADDING MAP
+		imageLogo.onload = function () {
+			var map = new Kinetic.Image({
+				x: 30,
+				y: 38,
+				image: imageLogo,
+				width: 40,
+				height: 40
+			});
+			layer.add(map);
+			stage.add(layer);
+		};
+		imageLogo.src = 'img/qxp.png'; 
 
 		$scope.waitTimes.forEach(function (node) {
 			if(node.rideID < 25){
