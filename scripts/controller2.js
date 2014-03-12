@@ -66,8 +66,8 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 
 	$scope.waitTimes = [];
 	var PADDING = 0;
-	var MAXWIDTH = 700;
-	var MAXHEIGHT = 550;
+	var MAXWIDTH = 1000;
+	var MAXHEIGHT = 770;
 	var stage = new Kinetic.Stage({
 		container: 'container',
 		width: MAXWIDTH,
@@ -106,14 +106,14 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 		titleLabel.add(new Kinetic.Text({
 			text: 'Q-Xposure',
 			fontFamily: 'Arial',
-			fontSize: 32,
+			fontSize: 36,
 			padding: 0,
 			fill: 'gray'
 		}));
 		layer.add(titleLabel);
 
 		$scope.waitTimes.forEach(function (node) {
-			
+			if(node.rideID < 25){
 			var coordX = node.coordinate.split(',')[0];
 			var coordY = node.coordinate.split(',')[1]; //horrible
 			var stageX = coordX * stage.getWidth() / 100 + PADDING;
@@ -156,8 +156,8 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 			labelLeft.add(new Kinetic.Text({
 				text: node.rideName+"\n"+node.waitTime + " mins",
 				fontFamily: 'Calibri',
-				fontSize: 14,
-				padding: 5,
+				fontSize: 12,
+				padding: 2,
 				fill: 'black'
 			}));
 			//IDLABEL START
@@ -167,7 +167,7 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 				opacity: 1
 			});
 			idLabel.add(new Kinetic.Text({
-				text: node.rideID,
+				text: node.rideID-9,
 				fontFamily: 'Calibri',
 				fontSize: 16,
 				padding: 0,
@@ -188,6 +188,7 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 			//FINALIZING
 			if(coordX && coordY){
 				layer.add(group);
+			}
 			}
 		});
 		stage.add(layer);

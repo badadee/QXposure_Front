@@ -118,9 +118,7 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 			var coordY = node.coordinate.split(',')[1]; //horrible
 			var stageX = coordX * stage.getWidth() / 100 + PADDING;
 			var stageY = coordY * stage.getHeight() / 100 + PADDING;
-			var group = new Kinetic.Group({
-				draggable: false
-			});
+			var group = new Kinetic.Group();
 			//CIRCLE START		
 			var circle = new Kinetic.Circle({
 				x: stageX,
@@ -157,7 +155,7 @@ app.controller('IndexCtrl', function ($scope, personFactory, notificationFactory
 				text: node.rideName+"\n"+node.waitTime + " mins",
 				fontFamily: 'Calibri',
 				fontSize: 14,
-				padding: 5,
+				padding: 2,
 				fill: 'black'
 			}));
 			//IDLABEL START
